@@ -4,23 +4,22 @@
 
 An alternative implementation of the [Bitwarden API](https://github.com/bitwarden/core) based on a AWS Serverless stack. Inspired by [bitwarden-ruby](https://github.com/jcs/bitwarden-ruby).
 
-  - based on the [serverless](https://serverless.com/) framework
-  - should run completely within AWS Free Tier limits
-  - automatic multi-zone availability
+- based on the [serverless](https://serverless.com/) framework
+- should run completely within AWS Free Tier limits
+- automatic multi-zone availability
 
-*(Note: This project is not associated with the [Bitwarden](https://bitwarden.com/) project nor 8bit Solutions LLC.)*
+_(Note: This project is not associated with the [Bitwarden](https://bitwarden.com/) project nor 8bit Solutions LLC.)_
 
-  * [Current status](#current-status)
-  * [Setup](#setup)
-  * [Upgrade](#upgrade)
-  * [Enable 2FA](#enable-2fa)
-  * [Import existing data](#import-existing-data)
-  * [Export data](#export-data)
-  * [Run on own domain](#run-on-own-domain)
-  * [Motivation](#motivation)
-  * [Development](#development)
-  * [TODO](#todo)
-
+- [Current status](#current-status)
+- [Setup](#setup)
+- [Upgrade](#upgrade)
+- [Enable 2FA](#enable-2fa)
+- [Import existing data](#import-existing-data)
+- [Export data](#export-data)
+- [Run on own domain](#run-on-own-domain)
+- [Motivation](#motivation)
+- [Development](#development)
+- [TODO](#todo)
 
 ## Current status
 
@@ -35,8 +34,14 @@ An alternative implementation of the [Bitwarden API](https://github.com/bitwarde
 If you have AWS credentials set up, this should get you a running instance of the API. Just plug the AWS Gateway Service endpoint into your Bitwarden settings.
 
 ```bash
-npm install -g serverless
 npm install
+
+# run local
+npm run local
+
+# lambda
+npm install -g serverless
+
 # Feel free to deploy to an AWS region closer to your typical location
 serverless deploy --region us-east-1 --stage prod
 ```
@@ -48,6 +53,7 @@ The deploy command will return a service URL (e.g. `https://abcd01234.execute-ap
 Simply re-deploy with `serverless deploy` from the latest checkout.
 
 Some releases need a a database migration. A special function is deployed for this purpose, invoke with:
+
 ```bash
 serverless invoke -f migrate [--stage] [--region]
 ```
@@ -62,7 +68,7 @@ Run `./two_factor.sh`, the script will ask you for the e-mail you want to set up
 
 Go to https://help.bitwarden.com/article/export-your-data/ if you need to export your data from regular bitwarden first.
 
-Use [bitwarden/cli](https://github.com/bitwarden/cli) to import your data.  You will need to register an account with another app beforehand.
+Use [bitwarden/cli](https://github.com/bitwarden/cli) to import your data. You will need to register an account with another app beforehand.
 
 ```bash
 npm install -g @bitwarden/cli
