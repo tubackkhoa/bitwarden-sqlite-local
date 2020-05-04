@@ -8,7 +8,25 @@ service:
     other: Delete
 plugins:
   - serverless-webpack
+  - serverless-dynamodb-local
   - serverless-offline
+
+custom:
+  dynamodb:
+    # If you only want to use DynamoDB Local in some stages, declare them here
+    stages:
+      - dev
+      - prod
+    start:
+      port: 8000
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+      seed: true
+      convertEmptyValues: true
+    # Uncomment only if you already have a DynamoDB running locally
+    # noStart: true
 
 provider:
   name: aws
@@ -23,6 +41,7 @@ provider:
     USERS_TABLE: ${self:service}-${self:provider.stage}-users
     CIPHERS_TABLE: ${self:service}-${self:provider.stage}-ciphers
     FOLDERS_TABLE: ${self:service}-${self:provider.stage}-folders
+    CONFIG: config.${self:provider.stage}.json
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -33,10 +52,10 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource:
-        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DEVICES_TABLE}"
-        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}"
-        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CIPHERS_TABLE}"
-        - "arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.FOLDERS_TABLE}"
+        - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.DEVICES_TABLE}'
+        - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.USERS_TABLE}'
+        - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.CIPHERS_TABLE}'
+        - 'arn:aws:dynamodb:${opt:region, self:provider.region}:*:table/${self:provider.environment.FOLDERS_TABLE}'
   usagePlan:
     throttle:
       burstLimit: 300 # request burst
@@ -44,7 +63,7 @@ provider:
 
 default_cors: &default_cors
   cors:
-    origin: "*"
+    origin: '*'
     headers:
       - Content-Type
       - Authorization
@@ -53,7 +72,7 @@ default_cors: &default_cors
       - Device-type
       - Pragma
       - Cache-Control
-    allowMethods: "GET, POST, OPTIONS, PUT, DELETE"
+    allowMethods: 'GET, POST, OPTIONS, PUT, DELETE'
 
 functions:
   # Identity endpoints
@@ -200,8 +219,6 @@ functions:
           method: any
           <<: *default_cors
           path: /{fallback+}
-
-
 
 resources:
   Resources:

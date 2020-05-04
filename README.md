@@ -37,7 +37,8 @@ If you have AWS credentials set up, this should get you a running instance of th
 npm install
 
 # run local
-npm run local
+yarn db:start
+yarn dev
 
 # lambda
 npm install -g serverless

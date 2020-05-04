@@ -1,10 +1,24 @@
+/* eslint-disable comma-dangle */
 import dynogels from 'dynogels-promisified';
+import path from 'path';
 import Joi from '@hapi/joi';
 
 const devicesTableName = process.env.DEVICES_TABLE;
 const usersTableName = process.env.USERS_TABLE;
 const cipherTableName = process.env.CIPHERS_TABLE;
 const folderTableName = process.env.FOLDERS_TABLE;
+
+const configFile = path.join(process.cwd(), process.env.CONFIG);
+dynogels.AWS.config.loadFromPath(configFile);
+
+// dynogels.dynamoDriver(
+//   new dynogels.AWS.DynamoDB({
+//     accessKeyId: 'DEFAULT_ACCESS_KEY',
+//     secretAccessKey: 'DEFAULT_SECRET',
+//     endpoint: 'http://localhost:8000',
+//     region: 'localhost',
+//   })
+// );
 
 // Bind internal dynogels logger to console, it supports warn/info/error as needed
 dynogels.log = console;
